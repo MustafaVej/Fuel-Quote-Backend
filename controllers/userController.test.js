@@ -74,8 +74,8 @@ describe('createQuote function', () => {
                 gallonsRequested: 50,
                 deliveryAddress: '123 Main St City, ST 12345',
                 deliveryDate: '3/18/2034',
-                pricePerGallon: 2.13,
-                totalAmountDue: 106.5
+                pricePerGallon: 0.50,
+                totalAmountDue: 25.0
             }
         };
         res = {
@@ -104,8 +104,8 @@ describe('createQuote function', () => {
             gallonsRequested: 50,
             deliveryAddress: '123 Main St City, ST 12345',
             deliveryDate: '3/18/2034',
-            pricePerGallon: 2.13,
-            totalAmountDue: 106.5
+            pricePerGallon: 0.50,
+            totalAmountDue: 25.0
         });
         expect(fuelQuoteData).toHaveLength(1);
     });

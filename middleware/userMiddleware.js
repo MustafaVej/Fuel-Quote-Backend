@@ -76,6 +76,10 @@ function validateLogin(req, res, next) {
     if (!gallonsRequested || !deliveryDate) {
       return res.status(400).json({ error: 'Gallons requested and delivery date are required' });
     }
+
+    if (gallonsRequested < 0) {
+      return res.status(400).json({ error: 'Gallons requested must be a positive number' });
+    }
   
     next(); 
   }

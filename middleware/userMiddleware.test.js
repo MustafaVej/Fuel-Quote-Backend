@@ -414,6 +414,15 @@ describe('validateFuelQuote', () => {
     expect(res.json).toHaveBeenCalledWith({ error: 'Gallons requested and delivery date are required' });
   });
 
+  test('should return 400 with error message if gallons requested is negative', () => {
+    req.body.gallonsRequested = -50;
+    req.body.deliveryDate = '2024-03-25';
+    validateFuelQuote(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Gallons requested must be a positive number' });
+  });
+
   test('should call next() if gallons requested and delivery date are present', () => {
     req.body.gallonsRequested = 100;
     req.body.deliveryDate = '2024-03-25';

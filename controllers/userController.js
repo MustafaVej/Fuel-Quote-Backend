@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken');
+const Pricing = require('./pricing');
+
+const pricing = new Pricing();
 
 const userProfiles = {
     user_name123: {
@@ -86,6 +89,8 @@ async function createQuote(req, res) {
     const { username, gallonsRequested, deliveryAddress, deliveryDate, pricePerGallon, totalAmountDue } = req.body;
 
     try {
+        const pricePerGallon = pricing.calculatePricePerGallon(gallonsRequested);
+        const totalAmountDue = pricing.calculateTotalPrice(gallonsRequested);
         const newQuote = {
             username,
             gallonsRequested,
