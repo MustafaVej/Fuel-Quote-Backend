@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Pricing from '../Pricing/Pricing'; 
 
 const FuelRequest = () => {
   const [gallonsRequested, setGallonsRequested] = useState(1);
   const [dateRequested, setDateRequested] = useState('2024-01-01');
-  const [totalPrice, setTotalPrice] = useState(0.5);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [username, setUsername] = useState('');
 
@@ -32,8 +33,9 @@ const FuelRequest = () => {
   }, [gallonsRequested, dateRequested]);
 
   const updateTotalPrice = () => {
-    const totalPriceValue = parseFloat(gallonsRequested) * 0.50;
-    setTotalPrice(totalPriceValue.toFixed(2));
+    const pricing = new Pricing();
+    const total = pricing.calculateTotalPrice(gallonsRequested);
+    setTotalPrice(total.toFixed(2));
   };
 
   const handleSubmit = async (e) => {
@@ -46,12 +48,14 @@ const FuelRequest = () => {
           'Content-Type': 'application/json'
         }
       };
+      const pricing = new Pricing();
+      const pricePerGallon = pricing.calculatePricePerGallon(gallonsRequested);
       const newQuoteData = {
         username,
         gallonsRequested,
         deliveryAddress,
         deliveryDate: dateRequested,
-        pricePerGallon: 0.50, 
+        pricePerGallon,
         totalAmountDue: totalPrice
       };
       const response = await axios.post('http://localhost:3000/api/fuel-quote/fuel-quote', newQuoteData, config);
@@ -61,7 +65,6 @@ const FuelRequest = () => {
       console.error('Error creating quote:', error);
     }
   };
-  
 
   const handleCancel = () => {
     window.location.href = '/profile';
